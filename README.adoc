@@ -1,0 +1,60 @@
+----
+RHEL 7 molecule setup 
+----
+
+----
+Sources:
+https://medium.com/devops-dudes/scaling-devops-with-ansible-part-2-test-test-test-1fe93f1123ad
+https://redhatnordicssa.github.io/test-ansible-role-molecule-podman
+----
+
+----
+sudo yum install -y podman ansible python3 python3-virtualenv gcc git libselinux-python3
+----
+
+----
+python3 -m virtualenv molecule_ansible
+source molecule_ansible/bin/activate
+pip install ansible testinfra molecule podman python-vagrant ansible-lint flake8 molecule[lint] molecule[podman]
+----
+
+----
+source molecule_ansible/bin/activate
+----
+
+----
+molecule init role my-new-role --driver-name podman
+----
+
+----
+If you have an existing ansible role, and want to add molecule testing to that role, run:
+molecule init scenario -r ftp --driver-name podman
+----
+
+----
+podman  login -u="<user>"   https://registry.redhat.io
+----
+
+
+----
+[root@dell-r730-001 ~]# pwd
+/root
+[root@dell-r730-001 ~]# source molecule_ansible/bin/activate
+(molecule_ansible) [root@dell-r730-001 ~]#
+
+(molecule_ansible) [root@dell-r730-001 ~]# cd my-new-role/
+(molecule_ansible) [root@dell-r730-001 my-new-role]# vim molecule/default/verify.yml
+----
+
+
+----
+As ROOT:
+(molecule_ansible) [root@dell-r730-001 my-new-role]# MOLECULE_NO_LOG="false" ANSIBLE_SSH_PIPELINING=False  molecule test -d podman
+----
+
+----
+(molecule_ansible2.7) [root@dell-r730-001 ansible-role-test]# podman container ls
+CONTAINER ID  IMAGE                                            COMMAND         CREATED         STATUS             PORTS  NAMES
+8a3a0f3dcd46  registry.access.redhat.com/ubi8/ubi-init:latest  /usr/sbin/init  10 seconds ago  Up 10 seconds ago         instance
+----
+
