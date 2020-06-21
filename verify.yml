@@ -1,0 +1,29 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  tasks:
+  - name: Example assertion
+    assert:
+      that: true
+
+  - name: install the latest version of vsftpd
+    yum:
+        name: vsftpd
+        state: latest
+
+
+  - name: check if vsftpd is installed
+    package:
+        name: vsftpd
+        state: present
+    check_mode: yes
+    register: pkg
+
+  - name: fail if package was not installed
+    assert:
+        that:
+          - pkg.changed is false
+        fail_msg: "Package vsftpd was not installed!"
+        success_msg: "Package vsftpd was installed."
