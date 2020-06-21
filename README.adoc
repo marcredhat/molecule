@@ -43,9 +43,12 @@ podman  login -u="<user>"   https://registry.redhat.io
 (molecule_ansible) [root@dell-r730-001 ~]#
 
 (molecule_ansible) [root@dell-r730-001 ~]# cd my-new-role/
+(molecule_ansible) [root@dell-r730-001 my-new-role]# vim molecule/default/molecule.yml
 (molecule_ansible) [root@dell-r730-001 my-new-role]# vim molecule/default/verify.yml
 ----
 
+https://github.com/marcredhat/molecule/blob/master/molecule.yml
+https://github.com/marcredhat/molecule/blob/master/verify.yml
 
 ----
 As ROOT:
